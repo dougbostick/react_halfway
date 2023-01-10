@@ -40,7 +40,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://cors-server-s8t5acleh-dougbostick.vercel.app/",
   "devDependencies": {
     "gh-pages": "^4.0.0"
   }
