@@ -222,13 +222,14 @@ function App() {
     setNearByPlaces([]);
     try {
       // await getPlaces(lat, lng, process.env.REACT_APP_API_KEY)
-      // await axios
-      //   .get(
-      //     //https://protected-brook-77403.herokuapp.com/
-      //     `https://github.com/Freeboard/thingproxy/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=500&type=restaurant&key=${process.env.REACT_APP_API_KEY}`
-      //   )
-      const key = process.env.REACT_APP_API_KEY;
-      await axios.post(`https://cors-server-s8t5acleh-dougbostick.vercel.app/getPlaces`, { lat, lng, key }).then((response) => {
+      await axios
+        .get(
+          //https://protected-brook-77403.herokuapp.com/
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=500&type=restaurant&key=${process.env.REACT_APP_API_KEY}`
+        )
+      // const key = process.env.REACT_APP_API_KEY;
+      // await axios.post(`https://cors-server-s8t5acleh-dougbostick.vercel.app/getPlaces`, { lat, lng, key })
+      .then((response) => {
         console.log(response.data);
         const places = response.data.results;
         const service = new window.google.maps.places.PlacesService(map);
