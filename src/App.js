@@ -209,13 +209,7 @@ function App() {
 
   const getPlaces = async (_lat, _lng, key) => {
     try {
-      const res = await axios.get('https://cors-server-sepia.vercel.app/getPlaces', {
-        params: {
-          _lat,
-          _lng,
-          key,
-        }
-      });
+      const res = await axios.get(`https://cors-server-sepia.vercel.app/getPlaces?lat=${_lat}&lng=${_lng}&key=${key}`);
       return res.data;
     } catch (err) {
       console.log(err);
