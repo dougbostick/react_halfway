@@ -24,7 +24,6 @@ function App() {
     getMessage();
   }, [message]);
 
-  // console.log('dest, origin', dest, origin)
   function addMarker(place) {
     const marker = new window.google.maps.Marker({
       position: place.geometry.location,
@@ -42,10 +41,6 @@ function App() {
 
   function hideMarkers() {
     setMapOnAll(null);
-    //still need to grab the halfway marker
-    // for (const mark in markers) {
-    //   mark.setMap(null);
-    // }
   }
 
   useEffect(() => {
@@ -98,7 +93,6 @@ function App() {
       {
         componentRestrictions: { country: ['us'] },
         fields: ['geometry', 'name'],
-        // types: ["establishment"],
       }
     );
     const autocompleteDest = new window.google.maps.places.Autocomplete(
@@ -106,7 +100,6 @@ function App() {
       {
         componentRestrictions: { country: ['us'] },
         fields: ['geometry', 'name'],
-        // types: ["establishment"],
       }
     );
     autocompleteOrigin.addListener('place_changed', () => {
@@ -119,13 +112,6 @@ function App() {
     setDirRender(new window.google.maps.DirectionsRenderer());
   }, []);
 
-  // useEffect(() => {
-  //   if (map) {
-  //     const control = document.getElementById('floating-panel');
-  //     map.controls[window.google.maps.ControlPosition.BOTTOM_RIGHT].push(control);
-  //   }
-  // }, [map]);
-
   const findLastStep = (halfWay, dir) => {
     let total = 0;
     let newSteps = [];
@@ -135,17 +121,12 @@ function App() {
       total += step.distance.value;
       if (total > halfWay) {
         //dig into last step and find halfway point for accuracy
-        // console.log(i);
-        // console.log(newSteps);
         return newSteps;
       }
     }
   };
 
   function takeMeThere(place) {
-    //name, used to be passed place.name
-    //need to include LNG / LAT data from generateNearByPlaces
-    console.log('TMT', place);
     hideMarkers();
     directionsService
       .route({
@@ -166,9 +147,6 @@ function App() {
   }
 
   function calculateAndDisplayRoute() {
-    console.log('dest', dest);
-    console.log('origin', origin);
-
     directionsService
       .route({
         origin: {
@@ -178,14 +156,11 @@ function App() {
         destination: {
           lat: dest.geometry.location.lat(),
           lng: dest.geometry.location.lng(),
-          // query: dest.name,
-          // query: "Amarillo",
         },
         //refactor for other modes of transport
         travelMode: window.google.maps.TravelMode.WALKING,
       })
       .then((response) => {
-        // console.log('response', response);
         const steps = response.routes[0].legs[0].steps;
         const distance = response.routes[0].legs[0].distance.value;
         const half = distance / 2;
@@ -207,10 +182,9 @@ function App() {
       );
   }
 
-  const getPlaces = async (_lat, _lng, key) => {
+  const getPlaces = async (_lat, _lng) => {
     try {
-      const res = await axios.get(`https://cors-server-sepia.vercel.app/getPlaces?lat=${_lat}&lng=${_lng}&key=${key}`);
-      console.log('axios getplaces',res)
+      const res = await axios.get(`https://cors-server-sepia.vercel.app/getPlaces?lat=${_lat}&lng=${_lng}`);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -219,14 +193,7 @@ function App() {
   async function findPlaces(lat, lng) {
     setNearByPlaces([]);
     try {
-       await getPlaces(lat, lng, process.env.REACT_APP_API_KEY)
-      // await axios
-      //   .get(
-      //     //https://protected-brook-77403.herokuapp.com/
-      //     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=500&type=restaurant&key=${process.env.REACT_APP_API_KEY}`
-      //   )
-      // const key = process.env.REACT_APP_API_KEY;
-      // await axios.post(`https://cors-server-s8t5acleh-dougbostick.vercel.app/getPlaces`, { lat, lng, key })
+       await getPlaces(lat, lng)
       .then((response) => {
         console.log(response);
         const places = response.results;
@@ -250,16 +217,6 @@ function App() {
                 lng: place.geometry.location.lng,
               };
               setNearByPlaces((prevArr) => [...prevArr, nearByPlace]);
-
-              // info = document.createElement('div');
-              // info.innerHTML = place.name;
-              // info.innerHTML += `<a href="${_place.url}" target="_blank">Listing</a>`;
-              // info.innerHTML += `<a href="${_place.website}" target="_blank">Website</a>`;
-              // // info.innerHTML += `<button onClick=takeMe(${place.name})>Take Me There</button>`;
-              // placesDiv.appendChild(info);
-              // // takeMe = (place) => {
-              // //   console.log(`take me to ${place}`);
-              // // };
             }
           }
         });
@@ -270,7 +227,6 @@ function App() {
   }
 
   const nearByPlacesDiv = nearByPlaces?.map((place) => {
-    // console.log('running');
     return (
       <div className="places_results">
         <div style={{ margin: '14px' }}>{place.name}</div>
@@ -291,7 +247,6 @@ function App() {
     );
   });
 
-  // console.log('NBP div',nearByPlacesDiv)
   return (
     <div className="App">
       <div className="nav">
@@ -316,8 +271,6 @@ function App() {
           {nearByPlacesDiv}
         </div>
       </div>
-      {/* <Inputs />
-      <MapPannel /> */}
     </div>
   );
 }
