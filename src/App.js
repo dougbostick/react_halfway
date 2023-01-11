@@ -252,7 +252,7 @@ function App() {
       <div className="nav">
         <img src={logo} />
       </div>
-      {message ? message : 'no message'}
+      {/* {message ? message : 'no message'} */}
       <div id="container">
         <div id="map" />
 
