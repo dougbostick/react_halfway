@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/react_halfway/static/css/main.aa0344b6.css",
-    "main.js": "/react_halfway/static/js/main.26f031d5.js",
+    "main.js": "/react_halfway/static/js/main.36d0f011.js",
     "static/media/logo.png": "/react_halfway/static/media/logo.ed7ec461483b3e1b9399.png",
     "index.html": "/react_halfway/index.html",
     "main.aa0344b6.css.map": "/react_halfway/static/css/main.aa0344b6.css.map",
-    "main.26f031d5.js.map": "/react_halfway/static/js/main.26f031d5.js.map"
+    "main.36d0f011.js.map": "/react_halfway/static/js/main.36d0f011.js.map"
   },
   "entrypoints": [
     "static/css/main.aa0344b6.css",
-    "static/js/main.26f031d5.js"
+    "static/js/main.36d0f011.js"
   ]
 }
