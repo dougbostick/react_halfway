@@ -210,6 +210,7 @@ function App() {
   const getPlaces = async (_lat, _lng, key) => {
     try {
       const res = await axios.get(`https://cors-server-sepia.vercel.app/getPlaces?lat=${_lat}&lng=${_lng}&key=${key}`);
+      console.log('axios getplaces',res)
       return res.data;
     } catch (err) {
       console.log(err);
@@ -227,8 +228,8 @@ function App() {
       // const key = process.env.REACT_APP_API_KEY;
       // await axios.post(`https://cors-server-s8t5acleh-dougbostick.vercel.app/getPlaces`, { lat, lng, key })
       .then((response) => {
-        console.log(response.data);
-        const places = response.data.results;
+        console.log(response);
+        const places = response.results;
         const service = new window.google.maps.places.PlacesService(map);
         places.forEach((place) => {
           const request = {
