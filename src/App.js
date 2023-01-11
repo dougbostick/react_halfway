@@ -15,7 +15,7 @@ function App() {
   const [message, setMessage] = useState('');
 
   const getMessage = async () => {
-    const res = await axios.get('/message');
+    const res = await axios.get('https://cors-server-s8t5acleh-dougbostick.vercel.app/message');
     setMessage(res.data);
   };
 
