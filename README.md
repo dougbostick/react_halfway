@@ -12,10 +12,7 @@ The app isusing React hooks, axios and custom direction processing functions.
 ## Use it Now
  Try it here: https://dougbostick.github.io/react_halfway/
 
- <a href="https://word-game-nu.vercel.app/" target="_blank">
- <img src="https://github.com/dougbostick/word_game/assets/95255667/cf27b1a9-ae88-492c-a2a0-7e9f3b3b27b0" width="600px" />
+ <a href="https://dougbostick.github.io/react_halfway/" target="_blank">
+ <img src="https://github.com/dougbostick/react_halfway/assets/95255667/966021c5-877a-4274-9c6f-03e99ebe386e" width="600px" />
  </a>
 
-
-
-Halfway is an app designed to solve the problem of where to meet your friends! Halfway is ready to take two locations and generate a list of restaurants right around the halfway point! Now you don't have to worry about choosing a good place for everyone.
