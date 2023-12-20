@@ -13,6 +13,6 @@ The app isusing React hooks, axios and custom direction processing functions.
  Try it here: https://dougbostick.github.io/react_halfway/
 
  <a href="https://dougbostick.github.io/react_halfway/" target="_blank">
- <img src="https://github.com/dougbostick/react_halfway/assets/95255667/966021c5-877a-4274-9c6f-03e99ebe386e" width="600px" height="250px" />
+ <img src="https://github.com/dougbostick/react_halfway/assets/95255667/966021c5-877a-4274-9c6f-03e99ebe386e" width="700px" height="250px" />
  </a>
 
