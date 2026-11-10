@@ -190,41 +190,82 @@ function App() {
       console.log(err);
     }
   };
-  async function findPlaces(lat, lng) {
-    setNearByPlaces([]);
-    try {
-       await getPlaces(lat, lng)
-      .then((response) => {
-        console.log(response);
-        const places = response.results;
-        const service = new window.google.maps.places.PlacesService(map);
-        places.forEach((place) => {
-          const request = {
-            placeId: place.place_id,
-            fields: ['url', 'website'],
-          };
+  // async function findPlaces(lat, lng) {
+  //   setNearByPlaces([]);
+  //   try {
+  //      await getPlaces(lat, lng)
+  //     .then((response) => {
+  //       console.log(response);
+  //       const places = response.results;
+  //       const service = new window.google.maps.places.PlacesService(map);
+  //       places.forEach((place) => {
+  //         const request = {
+  //           placeId: place.place_id,
+  //           fields: ['url', 'website'],
+  //         };
 
-          service.getDetails(request, callback);
+  //         service.getDetails(request, callback);
 
-          function callback(_place, status) {
-            if (status == window.google.maps.places.PlacesServiceStatus.OK) {
-              // console.log('place', place);
-              let nearByPlace = {
-                name: place.name,
-                url: _place.url,
-                website: _place.website,
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
-              };
-              setNearByPlaces((prevArr) => [...prevArr, nearByPlace]);
-            }
-          }
-        });
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  //         function callback(_place, status) {
+  //           if (status == window.google.maps.places.PlacesServiceStatus.OK) {
+  //             // console.log('place', place);
+  //             let nearByPlace = {
+  //               name: place.name,
+  //               url: _place.url,
+  //               website: _place.website,
+  //               lat: place.geometry.location.lat,
+  //               lng: place.geometry.location.lng,
+  //             };
+  //             setNearByPlaces((prevArr) => [...prevArr, nearByPlace]);
+  //           }
+  //         }
+  //       });
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  function findPlaces(lat, lng) {
+  if (!map || (!lat && !lng)) {
+    console.warn('Calculate the halfway point first.');
+    return;
   }
+  setNearByPlaces([]);
+
+  const service = new window.google.maps.places.PlacesService(map);
+  const { OK } = window.google.maps.places.PlacesServiceStatus;
+
+  service.nearbySearch(
+    { location: { lat, lng }, radius: 500, type: 'restaurant' },
+    (results, status) => {
+      if (status !== OK || !results) {
+        console.error('Nearby search failed:', status);
+        return;
+      }
+
+      results.forEach((place) => {
+        service.getDetails(
+          { placeId: place.place_id, fields: ['url', 'website'] },
+          (details, detailStatus) => {
+            if (detailStatus !== OK) return;
+            setNearByPlaces((prev) => [
+              ...prev,
+              {
+                id: place.place_id,
+                name: place.name,
+                url: details.url,
+                website: details.website,
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+              },
+            ]);
+          }
+        );
+      });
+    }
+  );
+}
 
   const nearByPlacesDiv = nearByPlaces?.map((place) => {
     return (
