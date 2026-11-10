@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import logo from './logo.png';
 
 function App() {
@@ -13,16 +12,6 @@ function App() {
   const [nearByPlaces, setNearByPlaces] = useState([]);
   const [markers, setMarkers] = useState([]);
   const [message, setMessage] = useState('');
-
-  const getMessage = async () => {
-    const res = await axios.get('https://cors-server-sepia.vercel.app/message');
-    console.log('getmessage', res)
-    setMessage(res.data);
-  };
-
-  useEffect(() => {
-    getMessage();
-  }, [message]);
 
   function addMarker(place) {
     const marker = new window.google.maps.Marker({
@@ -127,24 +116,19 @@ function App() {
   };
 
   function takeMeThere(place) {
-    hideMarkers();
-    directionsService
-      .route({
-        origin: {
-          query: origin.name,
-        },
-        destination: {
-          lat: place.lat,
-          lng: place.lng,
-        },
-        travelMode: window.google.maps.TravelMode.WALKING,
-      })
-      .then((response) => {
-        console.log('THEN');
-        directionsRender.setMap(map);
-        directionsRender.setDirections(response);
-      });
-  }
+  hideMarkers();
+  directionsService
+    .route({
+      origin: origin.geometry.location,
+      destination: { placeId: place.id },
+      travelMode: window.google.maps.TravelMode.WALKING,
+    })
+    .then((response) => {
+      directionsRender.setMap(map);
+      directionsRender.setDirections(response);
+    })
+    .catch((e) => window.alert('Directions request failed due to ' + e.status));
+}
 
   function calculateAndDisplayRoute() {
     directionsService
@@ -181,50 +165,6 @@ function App() {
         window.alert('Directions request failed due to ' + e.status)
       );
   }
-
-  const getPlaces = async (_lat, _lng) => {
-    try {
-      const res = await axios.get(`https://cors-server-sepia.vercel.app/getPlaces?lat=${_lat}&lng=${_lng}`);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  // async function findPlaces(lat, lng) {
-  //   setNearByPlaces([]);
-  //   try {
-  //      await getPlaces(lat, lng)
-  //     .then((response) => {
-  //       console.log(response);
-  //       const places = response.results;
-  //       const service = new window.google.maps.places.PlacesService(map);
-  //       places.forEach((place) => {
-  //         const request = {
-  //           placeId: place.place_id,
-  //           fields: ['url', 'website'],
-  //         };
-
-  //         service.getDetails(request, callback);
-
-  //         function callback(_place, status) {
-  //           if (status == window.google.maps.places.PlacesServiceStatus.OK) {
-  //             // console.log('place', place);
-  //             let nearByPlace = {
-  //               name: place.name,
-  //               url: _place.url,
-  //               website: _place.website,
-  //               lat: place.geometry.location.lat,
-  //               lng: place.geometry.location.lng,
-  //             };
-  //             setNearByPlaces((prevArr) => [...prevArr, nearByPlace]);
-  //           }
-  //         }
-  //       });
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
 
   function findPlaces(lat, lng) {
   if (!map || (!lat && !lng)) {
@@ -293,7 +233,6 @@ function App() {
       <div className="nav">
         <img src={logo} />
       </div>
-      {/* {message ? message : 'no message'} */}
       <div id="container">
         <div id="map" />
 
